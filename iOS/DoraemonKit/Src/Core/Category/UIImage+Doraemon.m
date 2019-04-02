@@ -14,28 +14,46 @@
     if(name){
         NSBundle *bundle = [NSBundle bundleForClass:NSClassFromString(@"DoraemonManager")];
         NSURL *url = [bundle URLForResource:@"DoraemonKit" withExtension:@"bundle"];
-        NSBundle *imageBundle = [NSBundle bundleWithURL:url];
-        
-        NSString *imageName = nil;
-        CGFloat scale = [UIScreen mainScreen].scale;
-        if (ABS(scale-3) <= 0.001){
-            imageName = [NSString stringWithFormat:@"%@@3x",name];
-        }else if(ABS(scale-2) <= 0.001){
-            imageName = [NSString stringWithFormat:@"%@@2x",name];
-        }else{
-            imageName = name;
-        }
-        UIImage *image = [UIImage imageWithContentsOfFile:[imageBundle pathForResource:imageName ofType:@"png"]];
-        if (!image) {
-            image = [UIImage imageWithContentsOfFile:[imageBundle pathForResource:name ofType:@"png"]];
-            if (!image) {
-                image = [UIImage imageNamed:name];
+        if (url) {
+            NSBundle *imageBundle = [NSBundle bundleWithURL:url];
+            
+            NSString *imageName = nil;
+            CGFloat scale = [UIScreen mainScreen].scale;
+            if (ABS(scale-3) <= 0.001){
+                imageName = [NSString stringWithFormat:@"%@@3x",name];
+            }else if(ABS(scale-2) <= 0.001){
+                imageName = [NSString stringWithFormat:@"%@@2x",name];
+            }else{
+                imageName = name;
             }
+            UIImage *image = [UIImage imageWithContentsOfFile:[imageBundle pathForResource:imageName ofType:@"png"]];
+            if (!image) {
+                image = [UIImage imageWithContentsOfFile:[imageBundle pathForResource:name ofType:@"png"]];
+                if (!image) {
+                    image = [UIImage imageNamed:name];
+                }
+            }
+            return image;
+        } else {
+            static UIImage *defultImage = nil;
+            if (!defultImage) {
+                defultImage = [UIImage imageWithColor:[UIColor whiteColor]];
+            }
+            return defultImage;
         }
-        return image;
+
     }
     
     return nil;
+}
+
++ (UIImage*) imageWithColor:(UIColor*)color{
+    CGRect rect = CGRectMake(0.0f, 0.0f, 20.0f, 20.0f);
+    UIGraphicsBeginImageContext(rect.size);
+    CGContextRef context = UIGraphicsGetCurrentContext();CGContextSetFillColorWithColor(context, [color CGColor]);
+    CGContextFillRect(context, rect);
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+    UIGraphicsEndImageContext();return image;
 }
 
 //压缩图片尺寸 等比缩放 通过计算得到缩放系数
