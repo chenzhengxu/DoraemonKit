@@ -58,6 +58,7 @@ Pod::Spec.new do |s|
     ss.vendored_frameworks = 'iOS/DoraemonKit/Framework/*.framework'
   end
 
+  s.pod_target_xcconfig = { 'OTHER_LDFLAGS' => '-lObjC' }
   s.dependency 'PNChart'
   s.dependency 'BSBacktraceLogger'
   s.dependency 'fishhook'
