@@ -28,6 +28,7 @@
 #define IPHONE_SAFEBOTTOMAREA_HEIGHT (IS_IPHONE_X_Series ? 34 : 0)
 #define IPHONE_TOPSENSOR_HEIGHT      (IS_IPHONE_X_Series ? 32 : 0)
 
+#define DoraemonNavRect (CGRectMake(0, IPHONE_NAVIGATIONBAR_HEIGHT, [UIScreen mainScreen].bounds.size.width, [UIScreen mainScreen].bounds.size.height))
 
 #define DoraemonShowPluginNotification @"DoraemonShowPluginNotification"
 #define DoraemonClosePluginNotification @"DoraemonClosePluginNotification"
