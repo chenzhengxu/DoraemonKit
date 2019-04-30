@@ -62,6 +62,7 @@ Pod::Spec.new do |s|
   s.dependency 'BSBacktraceLogger'
   s.dependency 'fishhook'
   s.dependency 'UITextView+Placeholder'
+  s.dependency 'AppTrace', '0.1.1'
 
 end
 

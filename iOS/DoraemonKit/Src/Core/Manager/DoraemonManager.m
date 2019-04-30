@@ -22,6 +22,8 @@
 #import "DoraemonAllTestManager.h"
 #import "DoraemonStatisticsUtil.h"
 
+#import "AppTrace.h"
+
 #if DoraemonWithLogger
 #import "DoraemonCocoaLumberjackLogger.h"
 #import "DoraemonCocoaLumberjackViewController.h"
@@ -54,6 +56,16 @@ typedef void (^DoraemonPerformanceBlock)(NSDictionary *);
 @end
 
 @implementation DoraemonManager
+
++ (void)load {
+    [AppTrace startTrace];
+    __block id observer = [[NSNotificationCenter defaultCenter] addObserverForName:UIApplicationDidFinishLaunchingNotification object:nil queue:nil usingBlock:^(NSNotification * _Nonnull note) {
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(10 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [[DoraemonManager shareInstance] install];
+        });
+        [[NSNotificationCenter defaultCenter] removeObserver:observer];
+    }];
+}
 
 + (nonnull DoraemonManager *)shareInstance{
     static dispatch_once_t once;
